@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>維修客服系統</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- 登入介面 -->
+    <div id="login-modal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <h3>請選擇登入身份</h3>
+            <div class="login-options">
+                <button id="login-cs" class="login-btn">客服人員</button>
+                <div id="tech-login-section" style="margin-top: 20px;">
+                    <label for="tech-select">技術人員：</label>
+                    <select id="tech-select" class="tech-select">
+                        <option value="">請選擇技術人員</option>
+                        <option value="技術人員A">技術人員A</option>
+                        <option value="技術人員B">技術人員B</option>
+                        <option value="技術人員C">技術人員C</option>
+                    </select>
+                    <button id="login-tech" class="login-btn" style="margin-top: 10px;">登入</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主系統介面 -->
+    <div id="main-system" style="display: none;">
+    <header>
+        <h1>維修客服系統</h1>
+        <button id="logout-btn" class="logout-btn">登出</button>
+    </header>
+    <main>
+        <section id="ticket-section">
+            <h2>維修單管理</h2>
+            <div class="controls">
+                <div class="search-box">
+                    <input type="text" id="search-ticket" placeholder="搜尋維修單名稱">
+                    <button id="search-btn">搜尋</button>
+                </div>
+                <button id="create-ticket">新增維修單</button>
+            </div>
+            <div id="ticket-list"></div>
+        </section>
+        <section id="technician-section">
+            <h2>技師指派</h2>
+            <div id="technician-list"></div>
+        </section>
+    </main>
+
+    <!-- 新增維修單表單彈窗 -->
+    <div id="ticket-modal" class="modal">
+        <div class="modal-content">
+            <h3>新增維修單</h3>
+            <form id="ticket-form">
+                <div class="form-group">
+                    <label for="ticket-name">維修單名稱:</label>
+                    <input type="text" id="ticket-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="customer-name">客戶姓名:</label>
+                    <input type="text" id="customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="issue-desc">問題描述:</label>
+                    <textarea id="issue-desc" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="create-time">建立時間:</label>
+                    <input type="datetime-local" id="create-time">
+                </div>
+                <div class="form-actions">
+                    <button type="submit">確定</button>
+                    <button type="button" id="cancel-ticket">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 編輯維修單表單彈窗 -->
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <h3>編輯維修單</h3>
+            <form id="edit-form">
+                <div class="form-group">
+                    <label for="edit-ticket-name">維修單名稱:</label>
+                    <input type="text" id="edit-ticket-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-customer-name">客戶姓名:</label>
+                    <input type="text" id="edit-customer-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-issue-desc">問題描述:</label>
+                    <textarea id="edit-issue-desc" rows="4" required></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">確定</button>
+                    <button type="button" id="cancel-edit">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 刪除確認彈窗 -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h3>確認刪除</h3>
+            <p>確定要刪除此維修單嗎？</p>
+            <div class="form-actions">
+                <button type="button" id="confirm-delete">確定</button>
+                <button type="button" id="cancel-delete">取消</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 指派技師彈窗 -->
+    <div id="assign-modal" class="modal">
+        <div class="modal-content">
+            <h3>指派技師</h3>
+            <form id="assign-form">
+                <div class="form-group">
+                    <label for="assign-tech">選擇技師:</label>
+                    <select id="assign-tech" required>
+                        <option value="">請選擇技師</option>
+                        <option value="技術人員A">技術人員A</option>
+                        <option value="技術人員B">技術人員B</option>
+                        <option value="技術人員C">技術人員C</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">確定</button>
+                    <button type="button" id="cancel-assign">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 回報維修單彈窗 -->
+    <div id="report-modal" class="modal">
+        <div class="modal-content">
+            <h3>回報維修單</h3>
+            <form id="report-form">
+                <div class="form-group">
+                    <label for="report-status">維修狀態:</label>
+                    <select id="report-status" required>
+                        <option value="">請選擇狀態</option>
+                        <option value="完成">完成</option>
+                        <option value="失敗">失敗</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="report-time">回報時間:</label>
+                    <input type="datetime-local" id="report-time" required>
+                </div>
+                <div class="form-group">
+                    <label for="report-notes">備註:</label>
+                    <textarea id="report-notes" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit">確定</button>
+                    <button type="button" id="cancel-report">取消</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="js/app.js"></script>
+    </div> <!-- 結束主系統介面 -->
+</body>
+</html>
